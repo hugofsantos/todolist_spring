@@ -19,7 +19,7 @@ public class TaskController {
   private TaskService taskService;
 
   @PostMapping("/")
-  public ResponseEntity<TaskModel> create(@RequestBody TaskModel taskModel, HttpServletRequest request) {
+  public ResponseEntity create(@RequestBody TaskModel taskModel, HttpServletRequest request) {
     try {
       final var idUser = request.getAttribute("idUser");
       taskModel.setIdUser((UUID) idUser);
@@ -29,8 +29,7 @@ public class TaskController {
       return ResponseEntity.status(HttpStatus.CREATED).body(task);
     } catch (Exception e) {
       System.err.println(e.getMessage());
-      ResponseEntity.badRequest();
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
-    return null;
   }
 }
