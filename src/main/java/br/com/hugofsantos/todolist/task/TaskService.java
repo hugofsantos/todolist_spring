@@ -1,6 +1,8 @@
 package br.com.hugofsantos.todolist.task;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,14 @@ public class TaskService {
       if(taskModel.getStartAt().isAfter(taskModel.getEndAt())) throw new Exception("A data de início deve ser menor do que a data de finalização da tarefa");
 
       return this.taskRepository.save(taskModel);
+    } catch (Exception e) {
+      throw e;
+    }
+  }
+
+  public List<TaskModel> getTasksByUserId(UUID userId) {
+    try {
+      return this.taskRepository.findByIdUser(userId);
     } catch (Exception e) {
       throw e;
     }
