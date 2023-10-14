@@ -10,8 +10,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data // Adicionar getters e setters
+@NoArgsConstructor // JPA
 @Entity(name = "tb_users")
 public class UserModel {
   @Id
@@ -26,4 +28,10 @@ public class UserModel {
 
   @CreationTimestamp
   private LocalDateTime createdAt;
+
+  public UserModel(String name, String username, String password) {
+    this.name = name;
+    this.username = username;
+    this.password = password;
+  }
 }
