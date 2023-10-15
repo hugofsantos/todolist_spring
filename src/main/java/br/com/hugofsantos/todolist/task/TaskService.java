@@ -2,10 +2,15 @@ package br.com.hugofsantos.todolist.task;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import javax.swing.text.html.Option;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import br.com.hugofsantos.todolist.utils.Utils;
 
 @Service
 public class TaskService {
@@ -26,6 +31,32 @@ public class TaskService {
   public List<TaskModel> getTasksByUserId(UUID userId) {
     try {
       return this.taskRepository.findByIdUser(userId);
+    } catch (Exception e) {
+      throw e;
+    }
+  }
+
+  public TaskModel getTaskById(UUID id) {
+    try {
+      final Optional<TaskModel> task = this.taskRepository.findById(id);
+      
+      return task.isPresent() ? task.get() : null;
+    } catch (Exception e) {
+      throw e;
+    }
+  }
+
+  public TaskModel updateTaskById(UUID idTask, TaskModel task) {
+    try {
+      final var findedTask = this.getTaskById(idTask);
+
+      if(findedTask != null) {
+        Utils.copyNonNullProperties(task, findedTask); // Copia todos os valores não nulos de task para findedTask
+
+        return this.taskRepository.save(findedTask);
+      }
+
+      return null;
     } catch (Exception e) {
       throw e;
     }
