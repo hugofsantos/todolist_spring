@@ -46,11 +46,14 @@ public class TaskService {
     }
   }
 
-  public TaskModel updateTaskById(UUID idTask, TaskModel task) {
+  public TaskModel updateTaskById(UUID idTask, TaskModel task, UUID idUser) throws Exception {
     try {
       final var findedTask = this.getTaskById(idTask);
 
       if(findedTask != null) {
+        if(!findedTask.getIdUser().equals(idUser)) throw new Exception("Usuário não tem permissão para alterar essa tarefa");
+
+
         Utils.copyNonNullProperties(task, findedTask); // Copia todos os valores não nulos de task para findedTask
 
         return this.taskRepository.save(findedTask);

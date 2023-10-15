@@ -52,7 +52,8 @@ public class TaskController {
   @PutMapping("/{id}")
   public ResponseEntity update(@RequestBody TaskModel taskModel, HttpServletRequest request, @PathVariable UUID id) {
     try {
-      final var updatedTask = this.taskService.updateTaskById(id, taskModel);
+      final var idUser = request.getAttribute("idUser");
+      final var updatedTask = this.taskService.updateTaskById(id, taskModel, (UUID) idUser);
 
       return ResponseEntity.status(HttpStatus.OK).body(updatedTask);
     } catch (Exception e) {
